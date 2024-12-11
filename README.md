@@ -111,3 +111,4 @@ For questions or feedback, please contact [@Pur3Cyf3r](https://x.com/Pur3Cyf3r)
 - [Splunk Documentation](https://docs.splunk.com/)
 - [Elastic Stack Documentation](https://www.elastic.co/guide/index.html)
 - [Azure Sentinel Documentation](https://learn.microsoft.com/en-us/azure/sentinel/)
+- [goproslowyo](https://x.com/GoProSlowYo)  or [goproslowyo](https://github.com/goproslowyo) for getting me to do this. 
