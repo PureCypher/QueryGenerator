@@ -136,10 +136,19 @@ let state = {
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    initializeQueryLanguageConfigs();
-    initializeEventListeners();
-    updateLogSources();
-    updateQueryOutput();
+    // Fetch query language data first
+    fetch('/queryLangs.json')
+        .then(response => response.json())
+        .then(data => {
+            window.queryLanguageData = data;
+            initializeQueryLanguageConfigs();
+            initializeEventListeners();
+            updateLogSources();
+            updateQueryOutput();
+        })
+        .catch(error => {
+            console.error('Error loading query language data:', error);
+        });
 });
 
 function initializeQueryLanguageConfigs() {
