@@ -1,0 +1,28 @@
+{
+  "name": "threathunter",
+  "version": "1.0.0",
+  "description": "Threat Hunting Query Generator",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PureCypher/ThreatHunter.git"
+  },
+  "keywords": [
+    "threat-hunting",
+    "security",
+    "query-generator"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PureCypher/ThreatHunter/issues"
+  },
+  "homepage": "https://github.com/PureCypher/ThreatHunter#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
