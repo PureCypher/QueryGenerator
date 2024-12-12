@@ -144,129 +144,129 @@
             "KeyScenarios": ["Monitoring workspace health and cost management"],
             "Fields": ["TimeGenerated", "Solution", "DataUsage", "ResourceName", "SubscriptionId"]
         }
-    ],
+    ], 
     "SplunkLogSources": [
         {
-            "SourceType": "WinEventLog",
-            "Purpose": "Ingests Windows Event Logs, including Application, Security, and System events.",
-            "KeyScenarios": ["Monitoring login events", "Account management activity", "System errors"],
-            "Fields": ["EventCode", "EventType", "ComputerName", "User", "Message", "LogName", "SourceName", "RecordNumber"]
+        "SourceType": "WinEventLog",
+        "Purpose": "Ingests Windows Event Logs, including Application, Security, and System events.",
+        "KeyScenarios": ["Monitoring login events", "Account management activity", "System errors"],
+        "Fields": ["EventCode", "EventType", "ComputerName", "User", "Message", "LogName", "SourceName", "RecordNumber"]
         },
         {
-            "SourceType": "Syslog",
-            "Purpose": "Ingests logs from Unix/Linux systems, firewalls, routers, and other devices supporting syslog.",
-            "KeyScenarios": ["System auditing", "Network device monitoring"],
-            "Fields": ["host", "source", "sourcetype", "severity", "timestamp", "facility", "message"]
+        "SourceType": "Syslog",
+        "Purpose": "Ingests logs from Unix/Linux systems, firewalls, routers, and other devices supporting syslog.",
+        "KeyScenarios": ["System auditing", "Network device monitoring"],
+        "Fields": ["host", "source", "sourcetype", "severity", "timestamp", "facility", "message"]
         },
         {
-            "SourceType": "Stream",
-            "Purpose": "Captures network packet data, providing deep insight into network traffic.",
-            "KeyScenarios": ["Analyzing network anomalies", "Identifying data exfiltration"],
-            "Fields": ["src_ip", "dst_ip", "src_port", "dst_port", "protocol", "bytes_in", "bytes_out", "timestamp"]
+        "SourceType": "Stream",
+        "Purpose": "Captures network packet data, providing deep insight into network traffic.",
+        "KeyScenarios": ["Analyzing network anomalies", "Identifying data exfiltration"],
+        "Fields": ["src_ip", "dst_ip", "src_port", "dst_port", "protocol", "bytes_in", "bytes_out", "timestamp"]
         },
         {
-            "SourceType": "DBConnect",
-            "Purpose": "Ingests logs and data from databases.",
-            "KeyScenarios": ["Monitoring database queries", "Detecting unauthorized database access"],
-            "Fields": ["query", "query_time", "database_name", "username", "host", "rows_returned"]
+        "SourceType": "DBConnect",
+        "Purpose": "Ingests logs and data from databases.",
+        "KeyScenarios": ["Monitoring database queries", "Detecting unauthorized database access"],
+        "Fields": ["query", "query_time", "database_name", "username", "host", "rows_returned"]
         },
         {
-            "SourceType": "CloudWatch",
-            "Purpose": "Integrates with AWS CloudWatch for collecting logs from AWS services.",
-            "KeyScenarios": ["AWS service usage monitoring", "Security monitoring in AWS"],
-            "Fields": ["logGroup", "logStream", "message", "eventId", "timestamp", "source", "resource"]
+        "SourceType": "CloudWatch",
+        "Purpose": "Integrates with AWS CloudWatch for collecting logs from AWS services.",
+        "KeyScenarios": ["AWS service usage monitoring", "Security monitoring in AWS"],
+        "Fields": ["logGroup", "logStream", "message", "eventId", "timestamp", "source", "resource"]
         },
         {
-            "SourceType": "S3",
-            "Purpose": "Ingests logs stored in Amazon S3 buckets, such as CloudTrail logs.",
-            "KeyScenarios": ["CloudTrail auditing", "Storage access monitoring"],
-            "Fields": ["bucket_name", "file_path", "event_time", "event_name", "principalId", "sourceIPAddress"]
+        "SourceType": "S3",
+        "Purpose": "Ingests logs stored in Amazon S3 buckets, such as CloudTrail logs.",
+        "KeyScenarios": ["CloudTrail auditing", "Storage access monitoring"],
+        "Fields": ["bucket_name", "file_path", "event_time", "event_name", "principalId", "sourceIPAddress"]
         },
         {
-            "SourceType": "HttpEventCollector (HEC)",
-            "Purpose": "Enables applications to send data directly to Splunk over HTTP/HTTPS.",
-            "KeyScenarios": ["Custom application monitoring", "Real-time data ingestion"],
-            "Fields": ["event", "host", "source", "sourcetype", "fields"]
+        "SourceType": "HttpEventCollector (HEC)",
+        "Purpose": "Enables applications to send data directly to Splunk over HTTP/HTTPS.",
+        "KeyScenarios": ["Custom application monitoring", "Real-time data ingestion"],
+        "Fields": ["event", "host", "source", "sourcetype", "fields"]
         },
         {
-            "SourceType": "Active Directory",
-            "Purpose": "Collects logs from Active Directory to monitor user and group activity.",
-            "KeyScenarios": ["Monitoring privileged account activity", "Detecting Active Directory misconfigurations"],
-            "Fields": ["EventID", "AccountName", "AccountDomain", "LogonType", "SourceWorkstation", "TargetUser"]
+        "SourceType": "Active Directory",
+        "Purpose": "Collects logs from Active Directory to monitor user and group activity.",
+        "KeyScenarios": ["Monitoring privileged account activity", "Detecting Active Directory misconfigurations"],
+        "Fields": ["EventID", "AccountName", "AccountDomain", "LogonType", "SourceWorkstation", "TargetUser"]
         },
         {
-            "SourceType": "Palo Alto Networks",
-            "Purpose": "Ingests logs from Palo Alto firewalls, including traffic, threat, and configuration logs.",
-            "KeyScenarios": ["Firewall traffic analysis", "Intrusion detection"],
-            "Fields": ["SourceIP", "DestinationIP", "SourcePort", "DestinationPort", "ThreatName", "Action", "Application"]
+        "SourceType": "Palo Alto Networks",
+        "Purpose": "Ingests logs from Palo Alto firewalls, including traffic, threat, and configuration logs.",
+        "KeyScenarios": ["Firewall traffic analysis", "Intrusion detection"],
+        "Fields": ["SourceIP", "DestinationIP", "SourcePort", "DestinationPort", "ThreatName", "Action", "Application"]
         },
         {
-            "SourceType": "Cisco ASA",
-            "Purpose": "Collects logs from Cisco Adaptive Security Appliance (ASA) devices.",
-            "KeyScenarios": ["VPN activity monitoring", "Firewall log analysis"],
-            "Fields": ["src_ip", "dst_ip", "src_port", "dst_port", "protocol", "action", "reason", "timestamp"]
+        "SourceType": "Cisco ASA",
+        "Purpose": "Collects logs from Cisco Adaptive Security Appliance (ASA) devices.",
+        "KeyScenarios": ["VPN activity monitoring", "Firewall log analysis"],
+        "Fields": ["src_ip", "dst_ip", "src_port", "dst_port", "protocol", "action", "reason", "timestamp"]
         }
-    ],
+    ], 
     "ElasticLogSources": [
         {
-            "SourceType": "Filebeat",
-            "Purpose": "Collects and forwards log data from files, including application logs, audit logs, and system logs.",
-            "KeyScenarios": ["Log file monitoring", "Forwarding web server logs"],
-            "Fields": ["log.file.path", "message", "timestamp", "host.name", "event.dataset", "log.offset"]
+        "SourceType": "Filebeat",
+        "Purpose": "Collects and forwards log data from files, including application logs, audit logs, and system logs.",
+        "KeyScenarios": ["Log file monitoring", "Forwarding web server logs"],
+        "Fields": ["log.file.path", "message", "timestamp", "host.name", "event.dataset", "log.offset"]
         },
         {
-            "SourceType": "Metricbeat",
-            "Purpose": "Collects metrics from operating systems and services, such as CPU usage and memory stats.",
-            "KeyScenarios": ["System performance monitoring", "Resource usage analysis"],
-            "Fields": ["system.cpu.total.pct", "system.memory.used.bytes", "system.load.1", "host.name", "timestamp"]
+        "SourceType": "Metricbeat",
+        "Purpose": "Collects metrics from operating systems and services, such as CPU usage and memory stats.",
+        "KeyScenarios": ["System performance monitoring", "Resource usage analysis"],
+        "Fields": ["system.cpu.total.pct", "system.memory.used.bytes", "system.load.1", "host.name", "timestamp"]
         },
         {
-            "SourceType": "Packetbeat",
-            "Purpose": "Captures network traffic and provides data on protocols like HTTP, DNS, and MySQL.",
-            "KeyScenarios": ["Network monitoring", "Troubleshooting application performance"],
-            "Fields": ["source.ip", "destination.ip", "source.port", "destination.port", "protocol", "bytes_in", "bytes_out", "timestamp"]
+        "SourceType": "Packetbeat",
+        "Purpose": "Captures network traffic and provides data on protocols like HTTP, DNS, and MySQL.",
+        "KeyScenarios": ["Network monitoring", "Troubleshooting application performance"],
+        "Fields": ["source.ip", "destination.ip", "source.port", "destination.port", "protocol", "bytes_in", "bytes_out", "timestamp"]
         },
         {
-            "SourceType": "Winlogbeat",
-            "Purpose": "Collects Windows Event Logs and forwards them to Elasticsearch.",
-            "KeyScenarios": ["Windows system monitoring", "Security event analysis"],
-            "Fields": ["event.code", "event.provider", "host.name", "user.name", "log.level", "message", "timestamp"]
+        "SourceType": "Winlogbeat",
+        "Purpose": "Collects Windows Event Logs and forwards them to Elasticsearch.",
+        "KeyScenarios": ["Windows system monitoring", "Security event analysis"],
+        "Fields": ["event.code", "event.provider", "host.name", "user.name", "log.level", "message", "timestamp"]
         },
         {
-            "SourceType": "Auditbeat",
-            "Purpose": "Monitors audit frameworks for security-related events, such as file changes and login attempts.",
-            "KeyScenarios": ["File integrity monitoring", "User activity auditing"],
-            "Fields": ["auditd.log.record_type", "auditd.log.action", "user.name", "file.path", "host.name", "timestamp"]
+        "SourceType": "Auditbeat",
+        "Purpose": "Monitors audit frameworks for security-related events, such as file changes and login attempts.",
+        "KeyScenarios": ["File integrity monitoring", "User activity auditing"],
+        "Fields": ["auditd.log.record_type", "auditd.log.action", "user.name", "file.path", "host.name", "timestamp"]
         },
         {
-            "SourceType": "Logstash",
-            "Purpose": "Processes and transforms log data before sending it to Elasticsearch.",
-            "KeyScenarios": ["Data enrichment", "Custom log transformation"],
-            "Fields": ["tags", "message", "host", "event_id", "processed_fields"]
+        "SourceType": "Logstash",
+        "Purpose": "Processes and transforms log data before sending it to Elasticsearch.",
+        "KeyScenarios": ["Data enrichment", "Custom log transformation"],
+        "Fields": ["tags", "message", "host", "event_id", "processed_fields"]
         },
         {
-            "SourceType": "Elasticsearch Ingest API",
-            "Purpose": "Directly ingests data into Elasticsearch using API calls.",
-            "KeyScenarios": ["Custom integrations", "Real-time data ingestion"],
-            "Fields": ["_index", "_type", "_id", "_source", "timestamp"]
+        "SourceType": "Elasticsearch Ingest API",
+        "Purpose": "Directly ingests data into Elasticsearch using API calls.",
+        "KeyScenarios": ["Custom integrations", "Real-time data ingestion"],
+        "Fields": ["_index", "_type", "_id", "_source", "timestamp"]
         },
         {
-            "SourceType": "Cloudflare Logs",
-            "Purpose": "Collects data from Cloudflare services, such as HTTP access logs and threat logs.",
-            "KeyScenarios": ["Web traffic analysis", "DDoS detection"],
-            "Fields": ["client.ip", "http.host", "http.method", "http.response.status", "threat.name", "timestamp"]
+        "SourceType": "Cloudflare Logs",
+        "Purpose": "Collects data from Cloudflare services, such as HTTP access logs and threat logs.",
+        "KeyScenarios": ["Web traffic analysis", "DDoS detection"],
+        "Fields": ["client.ip", "http.host", "http.method", "http.response.status", "threat.name", "timestamp"]
         },
         {
-            "SourceType": "Kubernetes Logs",
-            "Purpose": "Ingests logs from Kubernetes clusters and applications.",
-            "KeyScenarios": ["Container monitoring", "Application performance monitoring"],
-            "Fields": ["kubernetes.namespace", "kubernetes.pod.name", "container.id", "log", "timestamp"]
+        "SourceType": "Kubernetes Logs",
+        "Purpose": "Ingests logs from Kubernetes clusters and applications.",
+        "KeyScenarios": ["Container monitoring", "Application performance monitoring"],
+        "Fields": ["kubernetes.namespace", "kubernetes.pod.name", "container.id", "log", "timestamp"]
         },
         {
-            "SourceType": "AWS CloudWatch Logs",
-            "Purpose": "Collects logs from AWS services through CloudWatch.",
-            "KeyScenarios": ["AWS security monitoring", "Resource utilization tracking"],
-            "Fields": ["logGroup", "logStream", "message", "timestamp", "source", "awsRegion"]
+        "SourceType": "AWS CloudWatch Logs",
+        "Purpose": "Collects logs from AWS services through CloudWatch.",
+        "KeyScenarios": ["AWS security monitoring", "Resource utilization tracking"],
+        "Fields": ["logGroup", "logStream", "message", "timestamp", "source", "awsRegion"]
         }
-  ]
+  ]    
 }
