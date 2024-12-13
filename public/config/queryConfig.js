@@ -9,7 +9,13 @@ export const queryLanguages = {
             regex: 'REGEX',
             in: 'IN',
             gt: '>',
-            lt: '<'
+            lt: '<',
+            gte: '>=',
+            lte: '<=',
+            notEquals: '!=',
+            notIn: 'NOT IN',
+            startsWith: 'LIKE',
+            endsWith: 'LIKE'
         },
         logSources: {}
     },
@@ -23,7 +29,13 @@ export const queryLanguages = {
             regex: '~',
             in: ' in ',
             gt: '>',
-            lt: '<'
+            lt: '<',
+            gte: '>=',
+            lte: '<=',
+            notEquals: '!=',
+            notIn: ' not in ',
+            startsWith: ':*',
+            endsWith: ':*'
         },
         logSources: {}
     },
@@ -37,8 +49,13 @@ export const queryLanguages = {
             regex: 'matches regex',
             in: 'in',
             gt: '>',
-            lt: '<', 
-            as: '~='
+            lt: '<',
+            gte: '>=',
+            lte: '<=',
+            notEquals: '!=',
+            notIn: '!in',
+            startsWith: 'startswith',
+            endsWith: 'endswith'
         },
         logSources: {}
     }
@@ -77,6 +94,60 @@ export const queryTemplates = {
             { field: 'EventID', operator: 'equals', value: '4624' },
             { field: 'LogonType', operator: 'equals', value: '3' },
             { field: 'AuthenticationPackage', operator: 'equals', value: 'NTLM' }
+        ]
+    },
+    'ransomware-activity': {
+        title: 'Ransomware Activity',
+        description: 'Detect behaviors commonly associated with ransomware operations',
+        parameters: [
+            { field: 'ProcessName', operator: 'contains', value: 'vssadmin.exe' },
+            { field: 'CommandLine', operator: 'contains', value: 'delete shadows' },
+            { field: 'EventID', operator: 'equals', value: '4688' }
+        ]
+    },
+    'unusual-process-execution': {
+        title: 'Unusual Process Execution',
+        description: 'Identify processes executed from uncommon locations',
+        parameters: [
+            { field: 'ParentProcessName', operator: 'notEquals', value: 'explorer.exe' },
+            { field: 'ProcessPath', operator: 'regex', value: 'C:\\\\Users\\\\.*\\\\AppData\\\\.*' },
+            { field: 'EventID', operator: 'equals', value: '4688' }
+        ]
+    },
+    'dns-tunneling': {
+        title: 'DNS Tunneling',
+        description: 'Detect potential DNS tunneling activity',
+        parameters: [
+            { field: 'QueryName', operator: 'regex', value: '.*\\.[a-z]{4,}$' },
+            { field: 'QueryLength', operator: 'gt', value: '50' },
+            { field: 'EventID', operator: 'equals', value: '22' }
+        ]
+    },
+    'malicious-powershell': {
+        title: 'Malicious PowerShell Execution',
+        description: 'Detect suspicious PowerShell activity',
+        parameters: [
+            { field: 'ProcessName', operator: 'contains', value: 'powershell.exe' },
+            { field: 'CommandLine', operator: 'regex', value: '.*(invoke-mimikatz|downloadstring).*' },
+            { field: 'EventID', operator: 'equals', value: '4104' }
+        ]
+    },
+    'unauthorized-access': {
+        title: 'Unauthorized File Access',
+        description: 'Detect access to sensitive files or directories',
+        parameters: [
+            { field: 'ObjectName', operator: 'regex', value: '.*\\\\(finance|HR|confidential).*' },
+            { field: 'AccessMask', operator: 'in', value: '[0x2, 0x4, 0x20]' },
+            { field: 'EventID', operator: 'equals', value: '4663' }
+        ]
+    },
+    'phishing-detection': {
+        title: 'Phishing Email Detection',
+        description: 'Identify potential phishing email events',
+        parameters: [
+            { field: 'Sender', operator: 'contains', value: '.*@example.com' },
+            { field: 'AttachmentType', operator: 'in', value: '[exe, vbs, js]' },
+            { field: 'EventID', operator: 'equals', value: '1000' }
         ]
     }
 };
