@@ -7,7 +7,6 @@ export function sanitizeInput(input) {
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
         .replace(/'/g, '&#x27;')
         .replace(/\//g, '&#x2F;');
     
@@ -30,5 +29,13 @@ export function sanitizeQueryValue(value) {
         return `[${sanitizedItems.join(', ')}]`;
     }
     
-    return value.trim();
+    value = value.trim();
+    if (!value.startsWith('"')) {
+        value = '"' + value;
+    }
+    if (!value.endsWith('"')) {
+        value = value + '"';
+    }
+    
+    return value;
 }

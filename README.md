@@ -1,16 +1,16 @@
 ---
 
-# Threat-Hunting Query Generator
+# Query Generator
 
 ## Overview
 
-The **Threat-Hunting Query Generator** is a web application designed to help cybersecurity analysts generate accurate and efficient threat-hunting queries for Splunk (SPL), Elastic Stack (EQL), and Azure Sentinel (KQL). This tool simplifies the process of crafting and optimizing searches by providing customizable templates, log source selection, and integration with Indicators of Compromise (IOCs). It also supports mapping queries to the **MITRE ATT&CK** framework, enabling seamless alignment with known adversary tactics, techniques, and procedures (TTPs).
+The **Query Generator** is a web application designed to help cybersecurity analysts generate accurate and efficient queries for Splunk (SPL), Elastic Stack (EQL), and Azure Sentinel (KQL). This tool simplifies the process of crafting and optimizing searches by providing customizable templates, log source selection, and integration with Indicators of Compromise (IOCs). It also supports mapping queries to the **MITRE ATT&CK** framework, enabling seamless alignment with known adversary tactics, techniques, and procedures (TTPs).
 
 Built with a focus on security and ease of use, this tool enhances Security Operations Center (SOC) operations by providing analysts with the ability to quickly create and refine queries that are optimized for their specific environments.
 
 ## Features
 
-- **Query Generation**: Automatically generate threat-hunting queries in SPL, EQL, and KQL based on customizable templates and user-defined parameters.
+- **Query Generation**: Automatically generate queries in SPL, EQL, and KQL based on customizable templates and user-defined parameters.
 - **Customizable Templates**: Create and save templates for frequently used queries, allowing for rapid adaptation to changing threat scenarios.
 - **Log Source Selection**: Choose from a variety of log sources (e.g., network, endpoint, cloud) to tailor queries to your data.
 - **IOC Integration**: Easily incorporate Indicators of Compromise (IOCs) into queries for more targeted threat detection.

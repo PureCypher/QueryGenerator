@@ -37,7 +37,8 @@ export const queryLanguages = {
             regex: 'matches regex',
             in: 'in',
             gt: '>',
-            lt: '<'
+            lt: '<', 
+            as: '~='
         },
         logSources: {}
     }

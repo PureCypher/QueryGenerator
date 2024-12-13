@@ -24,6 +24,42 @@ function initQueryLanguageListener() {
     });
 }
 
+async function getFieldsForLogSources() {
+    const language = document.getElementById('queryLanguage').value;
+    const selectedSources = state.getSelectedSources();
+    let fields = new Set();
+
+    const data = await fetch('/queryLangs.json').then(response => response.json());
+
+    if (language === 'kql') {
+        selectedSources.forEach(source => {
+            // For KQL, the source is the table name
+            const table = data.KQLtables.find(t => t.TableName === source);
+            if (table) {
+                table.Fields.forEach(field => fields.add(field));
+            }
+        });
+    } else if (language === 'spl') {
+        selectedSources.forEach(source => {
+            // For Splunk, find matching source type
+            const logSource = data.SplunkLogSources.find(s => s.SourceType === source);
+            if (logSource) {
+                logSource.Fields.forEach(field => fields.add(field));
+            }
+        });
+    } else if (language === 'eql') {
+        selectedSources.forEach(source => {
+            // For Elastic, find matching source type
+            const logSource = data.ElasticLogSources.find(s => s.SourceType === source);
+            if (logSource) {
+                logSource.Fields.forEach(field => fields.add(field));
+            }
+        });
+    }
+
+    return Array.from(fields);
+}
+
 function initTimeRangeListener() {
     const timeRange = document.getElementById('timeRange');
     const customTimeRange = document.getElementById('customTimeRange');
@@ -97,20 +133,37 @@ function initQueryActionListeners() {
     document.getElementById('validateQuery').addEventListener('click', validateQuery);
 }
 
-export function updateLogSources() {
+export async function updateLogSources() {
     const language = document.getElementById('queryLanguage').value;
     const logSourcesContainer = document.querySelector('.log-sources');
-    const sources = queryLanguages[language].logSources;
-    
     logSourcesContainer.innerHTML = '';
     state.clearSelectedSources();
     
-    Object.entries(sources).forEach(([value, description], index) => {
+    const data = await fetch('/queryLangs.json').then(response => response.json());
+    let sources = [];
+
+    if (language === 'kql') {
+        sources = data.KQLtables.map(table => ({
+            value: table.TableName,
+            description: table.Purpose
+        }));
+    } else if (language === 'spl') {
+        sources = data.SplunkLogSources.map(source => ({
+            value: source.SourceType,
+            description: source.Purpose
+        }));
+    } else if (language === 'eql') {
+        sources = data.ElasticLogSources.map(source => ({
+            value: source.SourceType,
+            description: source.Purpose
+        }));
+    }
+    
+    sources.forEach(({value, description}, index) => {
         const sourceLabel = document.createElement('label');
         const sanitizedValue = sanitizeInput(value);
         const sanitizedDescription = sanitizeInput(description);
         sourceLabel.setAttribute('data-tooltip', sanitizedDescription);
-        const displayName = sanitizedValue.replace(/^index=/, '').replace(/^source=/, '');
         
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -128,23 +181,43 @@ export function updateLogSources() {
                 state.removeSelectedSource(sanitizedValue);
             }
             updateQueryOutput();
+            updateFieldDropdowns();
         });
         
         sourceLabel.appendChild(checkbox);
-        sourceLabel.appendChild(document.createTextNode(` ${displayName}`));
+        sourceLabel.appendChild(document.createTextNode(` ${sanitizedValue}`));
         logSourcesContainer.appendChild(sourceLabel);
     });
 
-    state.getCustomSources().forEach(sourceName => {
-        const sanitizedSource = sanitizeInput(sourceName);
-        const label = document.createElement('label');
-        label.innerHTML = `<input type="checkbox" value="${sanitizedSource}"> ${sanitizedSource}`;
-        label.querySelector('input').addEventListener('change', updateQueryOutput);
-        logSourcesContainer.appendChild(label);
+    updateFieldDropdowns();
+}
+
+async function updateFieldDropdowns() {
+    const fields = await getFieldsForLogSources();
+    document.querySelectorAll('.field-name').forEach(select => {
+        const currentValue = select.value;
+        select.innerHTML = `
+            <option value="">Select a field...</option>
+            <option value="custom">Enter custom field...</option>
+            ${fields.map(field => `<option value="${sanitizeInput(field)}">${sanitizeInput(field)}</option>`).join('')}
+        `;
+        if (currentValue) {
+            if (fields.includes(currentValue)) {
+                select.value = currentValue;
+            } else if (currentValue !== 'custom') {
+                // If the current value isn't in the fields list and isn't 'custom',
+                // add it as a custom option
+                const option = document.createElement('option');
+                option.value = currentValue;
+                option.textContent = `${currentValue} (custom)`;
+                select.appendChild(option);
+                select.value = currentValue;
+            }
+        }
     });
 }
 
-export function addParameterRow(field = '', operator = 'equals', value = '') {
+export async function addParameterRow(field = '', operator = 'equals', value = '') {
     const parametersContainer = document.querySelector('.parameters');
     const row = document.createElement('div');
     row.className = 'parameter-row';
@@ -154,40 +227,85 @@ export function addParameterRow(field = '', operator = 'equals', value = '') {
     
     const sanitizedField = sanitizeInput(field);
     const sanitizedOperator = sanitizeInput(operator);
-    const sanitizedValue = sanitizeQueryValue(value);
+    const sanitizedValue = sanitizeInput(value);
     
-    row.innerHTML = `
-        <input type="text" placeholder="Field name (e.g., src_ip)" class="field-name" value="${sanitizedField}">
-        <select class="operator">
-            ${Object.keys(operators).map(op => 
-                `<option value="${sanitizeInput(op)}" ${op === sanitizedOperator ? 'selected' : ''}>${sanitizeInput(op)}</option>`
-            ).join('')}
-        </select>
-        <input type="text" placeholder="Value" class="field-value" value="${sanitizedValue}">
-        <button class="remove-parameter">✕</button>
+    // Create field select dropdown
+    const fieldSelect = document.createElement('select');
+    fieldSelect.className = 'field-name';
+    
+    // Get fields from selected log sources
+    const fields = await getFieldsForLogSources();
+    
+    fieldSelect.innerHTML = `
+        <option value="">Select a field...</option>
+        <option value="custom">Enter custom field...</option>
+        ${fields.map(field => `<option value="${sanitizeInput(field)}">${sanitizeInput(field)}</option>`).join('')}
     `;
 
-    row.querySelector('.remove-parameter').addEventListener('click', () => {
+    if (sanitizedField) {
+        if (fields.includes(sanitizedField)) {
+            fieldSelect.value = sanitizedField;
+        } else {
+            const option = document.createElement('option');
+            option.value = sanitizedField;
+            option.textContent = `${sanitizedField} (custom)`;
+            fieldSelect.appendChild(option);
+            fieldSelect.value = sanitizedField;
+        }
+    }
+
+    // Handle custom field input
+    fieldSelect.addEventListener('change', (e) => {
+        if (e.target.value === 'custom') {
+            const customField = prompt('Enter custom field name:');
+            if (customField) {
+                const sanitizedCustomField = sanitizeInput(customField);
+                const option = document.createElement('option');
+                option.value = sanitizedCustomField;
+                option.textContent = `${sanitizedCustomField} (custom)`;
+                fieldSelect.appendChild(option);
+                fieldSelect.value = sanitizedCustomField;
+            } else {
+                fieldSelect.value = '';
+            }
+        }
+        updateQueryOutput();
+    });
+
+    row.appendChild(fieldSelect);
+    
+    const operatorSelect = document.createElement('select');
+    operatorSelect.className = 'operator';
+    operatorSelect.innerHTML = Object.keys(operators).map(op => 
+        `<option value="${sanitizeInput(op)}" ${op === sanitizedOperator ? 'selected' : ''}>${sanitizeInput(op)}</option>`
+    ).join('');
+    row.appendChild(operatorSelect);
+
+    const valueInput = document.createElement('input');
+    valueInput.type = 'text';
+    valueInput.placeholder = 'Value';
+    valueInput.className = 'field-value';
+    valueInput.value = sanitizedValue;
+    row.appendChild(valueInput);
+
+    const removeButton = document.createElement('button');
+    removeButton.className = 'remove-parameter';
+    removeButton.textContent = '✕';
+    row.appendChild(removeButton);
+
+    removeButton.addEventListener('click', () => {
         row.remove();
         updateQueryOutput();
     });
 
-    row.querySelectorAll('input').forEach(element => {
-        element.addEventListener('change', (e) => {
-            e.target.value = e.target.classList.contains('field-value') 
-                ? sanitizeQueryValue(e.target.value)
-                : sanitizeInput(e.target.value);
-            updateQueryOutput();
-        });
-        element.addEventListener('input', (e) => {
-            e.target.value = e.target.classList.contains('field-value')
-                ? sanitizeQueryValue(e.target.value)
-                : sanitizeInput(e.target.value);
-            updateQueryOutput();
-        });
+    operatorSelect.addEventListener('change', updateQueryOutput);
+    
+    // Only apply quotes when input is complete (change event)
+    valueInput.addEventListener('change', (e) => {
+        e.target.value = sanitizeQueryValue(e.target.value);
+        updateQueryOutput();
     });
 
-    row.querySelector('select').addEventListener('change', updateQueryOutput);
     parametersContainer.appendChild(row);
 }
 
@@ -199,7 +317,10 @@ export function addCustomLogSource(sourceName) {
         <input type="checkbox" value="${sanitizedSource}"> ${sanitizedSource}
     `;
     
-    label.querySelector('input').addEventListener('change', updateQueryOutput);
+    label.querySelector('input').addEventListener('change', () => {
+        updateQueryOutput();
+        updateFieldDropdowns();
+    });
     logSources.appendChild(label);
     state.addCustomSource(sanitizedSource);
 }
